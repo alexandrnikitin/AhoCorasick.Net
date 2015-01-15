@@ -48,10 +48,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AhoCorasickTreeTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AhoCorasick.Net\AhoCorasick.Net.csproj">
+      <Project>{2cafba59-090a-42b0-a0c2-f2396e873ccd}</Project>
+      <Name>AhoCorasick.Net</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
