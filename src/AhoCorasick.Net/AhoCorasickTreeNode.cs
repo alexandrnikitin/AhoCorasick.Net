@@ -12,7 +12,7 @@ namespace AhoCorasick.Net
         private readonly AhoCorasickTreeNode _parent;
 
         private int[] _buckets;
-        private int _bucketsLength;
+        private int _count;
         private Transition[] _transitions;
 
         public AhoCorasickTreeNode()
@@ -43,10 +43,10 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode AddTransition(char key)
         {
-            Resize(_transitions.Length + 1);
+            Resize(_count + 1);
 
             var value = new AhoCorasickTreeNode(this, key);
-            var targetBucket = key % _buckets.Length;
+            var targetBucket = key % _count;
 
             for (var i = _buckets[targetBucket]; i >= 0; i = _transitions[i].Next)
             {
@@ -57,7 +57,7 @@ namespace AhoCorasick.Net
                 }
             }
 
-            var index = _transitions.Length - 1;
+            var index = _count - 1;
 
             _transitions[index].Next = _buckets[targetBucket];
             _transitions[index].Key = key;
@@ -74,11 +74,11 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode GetTransition(char key)
         {
-            if (_bucketsLength == 0)
+            if (_count == 0)
             {
                 return null;
             }
-            var bucketIndex = key % _bucketsLength;
+            var bucketIndex = key % _count;
             for (var i = _buckets[bucketIndex]; i >= 0; i = _transitions[i].Next)
             {
                 if (_transitions[i].Key == key)
@@ -93,14 +93,14 @@ namespace AhoCorasick.Net
         private void Resize(int newSize)
         {
             var newBuckets = new int[newSize];
-            for (var i = 0; i < newBuckets.Length; i++)
+            for (var i = 0; i < newSize; i++)
             {
                 newBuckets[i] = -1;
             }
 
             var newEntries = new Transition[newSize];
-            Array.Copy(_transitions, 0, newEntries, 0, _transitions.Length);
-            for (var i = 0; i < _transitions.Length; i++)
+            Array.Copy(_transitions, 0, newEntries, 0, _count);
+            for (var i = 0; i < _count; i++)
             {
                 var bucket = newEntries[i].Key % newSize;
                 newEntries[i].Next = newBuckets[bucket];
@@ -109,7 +109,7 @@ namespace AhoCorasick.Net
             _buckets = newBuckets;
             _transitions = newEntries;
 
-            _bucketsLength = _buckets.Length;
+            _count = _buckets.Length;
         }
     }
 }
