@@ -1,5 +1,5 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace AhoCorasick.Net
 {
@@ -49,24 +49,12 @@ namespace AhoCorasick.Net
             get { return _parent == null ? null : _parent.Failure; }
         }
 
-        public IEnumerable<AhoCorasickTreeNode> Transitions
+        public AhoCorasickTreeNode[] Transitions
         {
-            get { return Values; }
+            get { return entries.Select(x => x.value).ToArray(); }
         }
 
         public char Value { get; private set; }
-
-        public IEnumerable<AhoCorasickTreeNode> Values
-        {
-            get
-            {
-                for (var index = 0; index < count; index++)
-                {
-                    var e = entries[index];
-                    if (e.key >= 0) yield return e.value;
-                }
-            }
-        }
 
         public AhoCorasickTreeNode AddTransition(char key)
         {
