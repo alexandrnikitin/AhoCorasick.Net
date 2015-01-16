@@ -11,12 +11,12 @@ namespace AhoCorasick.Net
 
         private readonly AhoCorasickTreeNode _parent;
 
-        private int[] buckets;
-        private int bucketsLength;
-        private int count;
+        private int[] _buckets;
+        private int _bucketsLength;
+        private int _count;
+        private int _freeCount;
+        private int _freeList;
         private Transition[] _transitions;
-        private int freeCount;
-        private int freeList;
 
         public AhoCorasickTreeNode()
             : this(null, ' ')
@@ -28,9 +28,9 @@ namespace AhoCorasick.Net
             Value = value;
             _parent = parent;
 
-            buckets = new int[0];
+            _buckets = new int[0];
             _transitions = new Transition[0];
-            freeList = -1;
+            _freeList = -1;
         }
 
         public AhoCorasickTreeNode ParentFailure
@@ -47,15 +47,15 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode AddTransition(char key)
         {
-            if (count == _transitions.Length)
+            if (_count == _transitions.Length)
             {
                 Resize();
             }
 
             var value = new AhoCorasickTreeNode(this, key);
-            var targetBucket = key % buckets.Length;
+            var targetBucket = key % _buckets.Length;
 
-            for (var i = buckets[targetBucket]; i >= 0; i = _transitions[i].Next)
+            for (var i = _buckets[targetBucket]; i >= 0; i = _transitions[i].Next)
             {
                 if (_transitions[i].Key == key)
                 {
@@ -64,27 +64,27 @@ namespace AhoCorasick.Net
                 }
             }
             int index;
-            if (freeCount > 0)
+            if (_freeCount > 0)
             {
-                index = freeList;
-                freeList = _transitions[index].Next;
-                freeCount--;
+                index = _freeList;
+                _freeList = _transitions[index].Next;
+                _freeCount--;
             }
             else
             {
-                if (count == _transitions.Length)
+                if (_count == _transitions.Length)
                 {
                     Resize();
-                    targetBucket = key % buckets.Length;
+                    targetBucket = key % _buckets.Length;
                 }
-                index = count;
-                count++;
+                index = _count;
+                _count++;
             }
 
-            _transitions[index].Next = buckets[targetBucket];
+            _transitions[index].Next = _buckets[targetBucket];
             _transitions[index].Key = key;
             _transitions[index].Value = value;
-            buckets[targetBucket] = index;
+            _buckets[targetBucket] = index;
 
             return value;
         }
@@ -96,12 +96,12 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode GetTransition(char key)
         {
-            if (bucketsLength == 0)
+            if (_bucketsLength == 0)
             {
                 return null;
             }
-            var bucketIndex = key % bucketsLength;
-            for (var i = buckets[bucketIndex]; i >= 0; i = _transitions[i].Next)
+            var bucketIndex = key % _bucketsLength;
+            for (var i = _buckets[bucketIndex]; i >= 0; i = _transitions[i].Next)
             {
                 if (_transitions[i].Key == key)
                 {
@@ -114,7 +114,7 @@ namespace AhoCorasick.Net
 
         private void Resize()
         {
-            Resize(count + 1);
+            Resize(_count + 1);
         }
 
         private void Resize(int newSize)
@@ -125,17 +125,17 @@ namespace AhoCorasick.Net
                 newBuckets[i] = -1;
             }
             var newEntries = new Transition[newSize];
-            Array.Copy(_transitions, 0, newEntries, 0, count);
-            for (var i = 0; i < count; i++)
+            Array.Copy(_transitions, 0, newEntries, 0, _count);
+            for (var i = 0; i < _count; i++)
             {
                 var bucket = newEntries[i].Key % newSize;
                 newEntries[i].Next = newBuckets[bucket];
                 newBuckets[bucket] = i;
             }
-            buckets = newBuckets;
+            _buckets = newBuckets;
             _transitions = newEntries;
 
-            bucketsLength = buckets.Length;
+            _bucketsLength = _buckets.Length;
         }
     }
 }
