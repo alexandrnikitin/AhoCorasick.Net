@@ -14,8 +14,6 @@ namespace AhoCorasick.Net
         private int[] _buckets;
         private int _bucketsLength;
         private int _count;
-        private int _freeCount;
-        private int _freeList;
         private Transition[] _transitions;
 
         public AhoCorasickTreeNode()
@@ -30,7 +28,6 @@ namespace AhoCorasick.Net
 
             _buckets = new int[0];
             _transitions = new Transition[0];
-            _freeList = -1;
         }
 
         public AhoCorasickTreeNode ParentFailure
@@ -63,23 +60,9 @@ namespace AhoCorasick.Net
                     return value;
                 }
             }
-            int index;
-            if (_freeCount > 0)
-            {
-                index = _freeList;
-                _freeList = _transitions[index].Next;
-                _freeCount--;
-            }
-            else
-            {
-                if (_count == _transitions.Length)
-                {
-                    Resize();
-                    targetBucket = key % _buckets.Length;
-                }
-                index = _count;
-                _count++;
-            }
+
+            var index = _count;
+            _count++;
 
             _transitions[index].Next = _buckets[targetBucket];
             _transitions[index].Key = key;
