@@ -14,9 +14,10 @@ namespace AhoCorasick.Net
 
             _root = new AhoCorasickTreeNode();
 
-            foreach (var keyword in keywords)
+            var length = keywords.Length;
+            for (var i = 0; i < length; i++)
             {
-                AddPatternToTree(keyword);
+                AddPatternToTree(keywords[i]);
             }
 
             SetFailureNodes();
