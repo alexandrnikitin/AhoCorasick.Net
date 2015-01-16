@@ -66,13 +66,15 @@ namespace AhoCorasick.Net
 
         private void AddPatternToTree(string pattern)
         {
-            var node = _rootNode;
-            foreach (var c in pattern)
+            var latestNode = _rootNode;
+            var length = pattern.Length;
+            for (var i = 0; i < length; i++)
             {
-                node = node.GetTransition(c)
-                       ?? node.AddTransition(c);
+                latestNode = latestNode.GetTransition(pattern[i])
+                       ?? latestNode.AddTransition(pattern[i]);
             }
-            node.IsFinished = true;
+
+            latestNode.IsFinished = true;
         }
 
         private List<AhoCorasickTreeNode> FailToRootNode()
