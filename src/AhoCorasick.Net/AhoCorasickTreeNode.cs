@@ -6,8 +6,8 @@ namespace AhoCorasick.Net
     public class AhoCorasickTreeNode
     {
         public AhoCorasickTreeNode Failure;
-
         public bool IsFinished;
+        public char Value;
 
         private readonly AhoCorasickTreeNode _parent;
 
@@ -38,8 +38,6 @@ namespace AhoCorasick.Net
         {
             get { return _transitions.Select(x => x.Value).ToArray(); }
         }
-
-        public char Value { get; private set; }
 
         public AhoCorasickTreeNode AddTransition(char key)
         {
@@ -100,7 +98,7 @@ namespace AhoCorasick.Net
 
             var newTransitions = new Transition[newSize];
             Array.Copy(_transitions, 0, newTransitions, 0, _count);
-            
+
             // rebalancing buckets
             for (var i = 0; i < _count; i++)
             {
