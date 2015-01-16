@@ -40,7 +40,7 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode[] Transitions
         {
-            get { return entries.Select(x => x.value).ToArray(); }
+            get { return entries.Select(x => x.Value).ToArray(); }
         }
 
         public char Value { get; private set; }
@@ -55,11 +55,11 @@ namespace AhoCorasick.Net
             var value = new AhoCorasickTreeNode(this, key);
             var targetBucket = key % buckets.Length;
 
-            for (var i = buckets[targetBucket]; i >= 0; i = entries[i].next)
+            for (var i = buckets[targetBucket]; i >= 0; i = entries[i].Next)
             {
-                if (entries[i].key == key)
+                if (entries[i].Key == key)
                 {
-                    entries[i].value = value;
+                    entries[i].Value = value;
                     return value;
                 }
             }
@@ -67,7 +67,7 @@ namespace AhoCorasick.Net
             if (freeCount > 0)
             {
                 index = freeList;
-                freeList = entries[index].next;
+                freeList = entries[index].Next;
                 freeCount--;
             }
             else
@@ -81,9 +81,9 @@ namespace AhoCorasick.Net
                 count++;
             }
 
-            entries[index].next = buckets[targetBucket];
-            entries[index].key = key;
-            entries[index].value = value;
+            entries[index].Next = buckets[targetBucket];
+            entries[index].Key = key;
+            entries[index].Value = value;
             buckets[targetBucket] = index;
 
             return value;
@@ -101,11 +101,11 @@ namespace AhoCorasick.Net
                 return null;
             }
             var bucketIndex = key % bucketsLength;
-            for (var i = buckets[bucketIndex]; i >= 0; i = entries[i].next)
+            for (var i = buckets[bucketIndex]; i >= 0; i = entries[i].Next)
             {
-                if (entries[i].key == key)
+                if (entries[i].Key == key)
                 {
-                    return entries[i].value;
+                    return entries[i].Value;
                 }
             }
 
@@ -128,21 +128,14 @@ namespace AhoCorasick.Net
             Array.Copy(entries, 0, newEntries, 0, count);
             for (var i = 0; i < count; i++)
             {
-                var bucket = newEntries[i].key % newSize;
-                newEntries[i].next = newBuckets[bucket];
+                var bucket = newEntries[i].Key % newSize;
+                newEntries[i].Next = newBuckets[bucket];
                 newBuckets[bucket] = i;
             }
             buckets = newBuckets;
             entries = newEntries;
 
             bucketsLength = buckets.Length;
-        }
-
-        private struct Entry
-        {
-            public char key;
-            public int next;
-            public AhoCorasickTreeNode value;
         }
     }
 }
