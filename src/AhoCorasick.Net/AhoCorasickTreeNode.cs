@@ -13,7 +13,6 @@ namespace AhoCorasick.Net
 
         private int[] _buckets;
         private int _bucketsLength;
-        private int _count;
         private Transition[] _transitions;
 
         public AhoCorasickTreeNode()
@@ -44,10 +43,7 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode AddTransition(char key)
         {
-            if (_count == _transitions.Length)
-            {
-                Resize();
-            }
+            Resize(_transitions.Length + 1);
 
             var value = new AhoCorasickTreeNode(this, key);
             var targetBucket = key % _buckets.Length;
@@ -61,8 +57,7 @@ namespace AhoCorasick.Net
                 }
             }
 
-            var index = _count;
-            _count++;
+            var index = _transitions.Length - 1;
 
             _transitions[index].Next = _buckets[targetBucket];
             _transitions[index].Key = key;
@@ -95,11 +90,6 @@ namespace AhoCorasick.Net
             return null;
         }
 
-        private void Resize()
-        {
-            Resize(_count + 1);
-        }
-
         private void Resize(int newSize)
         {
             var newBuckets = new int[newSize];
@@ -107,9 +97,10 @@ namespace AhoCorasick.Net
             {
                 newBuckets[i] = -1;
             }
+
             var newEntries = new Transition[newSize];
-            Array.Copy(_transitions, 0, newEntries, 0, _count);
-            for (var i = 0; i < _count; i++)
+            Array.Copy(_transitions, 0, newEntries, 0, _transitions.Length);
+            for (var i = 0; i < _transitions.Length; i++)
             {
                 var bucket = newEntries[i].Key % newSize;
                 newEntries[i].Next = newBuckets[bucket];
