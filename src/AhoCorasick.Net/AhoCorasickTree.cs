@@ -1,29 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace AhoCorasick.Net
 {
     public class AhoCorasickTree
     {
-        public AhoCorasickTreeNode Root;
+        private readonly AhoCorasickTreeNode _root;
 
-        public AhoCorasickTree(IEnumerable<string> keywords)
+        public AhoCorasickTree(string[] keywords)
         {
-            Root = new AhoCorasickTreeNode();
+            if (keywords == null) throw new ArgumentNullException("keywords");
+            if (keywords.Length == 0) throw new ArgumentException("should contain keywords");
 
-            if (keywords != null)
+            _root = new AhoCorasickTreeNode();
+
+            foreach (var keyword in keywords)
             {
-                foreach (var p in keywords)
-                {
-                    AddPatternToTree(p);
-                }
-
-                SetFailureNodes();
+                AddPatternToTree(keyword);
             }
+
+            SetFailureNodes();
         }
 
         public bool Contains(string text)
         {
-            var pointer = Root;
+            var pointer = _root;
 
             var length = text.Length;
             for (var i = 0; i < length; i++)
@@ -34,7 +35,7 @@ namespace AhoCorasick.Net
                     if (transition == null)
                     {
                         pointer = pointer.Failure;
-                        if (pointer == Root)
+                        if (pointer == _root)
                         {
                             break;
                         }
@@ -59,12 +60,12 @@ namespace AhoCorasick.Net
         {
             var nodes = FailToRootNode();
             FailUsingBFS(nodes);
-            Root.Failure = Root;
+            _root.Failure = _root;
         }
 
         private void AddPatternToTree(string pattern)
         {
-            var node = Root;
+            var node = _root;
             foreach (var c in pattern)
             {
                 node = node.GetTransition(c)
@@ -76,9 +77,9 @@ namespace AhoCorasick.Net
         private List<AhoCorasickTreeNode> FailToRootNode()
         {
             var nodes = new List<AhoCorasickTreeNode>();
-            foreach (var node in Root.Transitions)
+            foreach (var node in _root.Transitions)
             {
-                node.Failure = Root;
+                node.Failure = _root;
                 nodes.AddRange(node.Transitions);
             }
             return nodes;
@@ -101,7 +102,7 @@ namespace AhoCorasick.Net
 
                     if (failure == null)
                     {
-                        node.Failure = Root;
+                        node.Failure = _root;
                     }
                     else
                     {
