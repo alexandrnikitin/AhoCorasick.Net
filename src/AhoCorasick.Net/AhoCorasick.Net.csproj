@@ -41,7 +41,7 @@
   <ItemGroup>
     <Compile Include="AhoCorasickTreeNode.cs" />
     <Compile Include="AhoCorasickTree.cs" />
-    <Compile Include="Entry.cs" />
+    <Compile Include="Transition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
