@@ -57,13 +57,6 @@ namespace AhoCorasick.Net
             return false;
         }
 
-        private void SetFailureNodes()
-        {
-            var nodes = FailToRootNode();
-            FailUsingBFS(nodes);
-            _rootNode.Failure = _rootNode;
-        }
-
         private void AddPatternToTree(string pattern)
         {
             var latestNode = _rootNode;
@@ -71,7 +64,7 @@ namespace AhoCorasick.Net
             for (var i = 0; i < length; i++)
             {
                 latestNode = latestNode.GetTransition(pattern[i])
-                       ?? latestNode.AddTransition(pattern[i]);
+                             ?? latestNode.AddTransition(pattern[i]);
             }
 
             latestNode.IsFinished = true;
@@ -120,6 +113,13 @@ namespace AhoCorasick.Net
                 }
                 nodes = newNodes;
             }
+        }
+
+        private void SetFailureNodes()
+        {
+            var nodes = FailToRootNode();
+            FailUsingBFS(nodes);
+            _rootNode.Failure = _rootNode;
         }
     }
 }
