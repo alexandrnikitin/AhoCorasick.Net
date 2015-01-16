@@ -98,17 +98,19 @@ namespace AhoCorasick.Net
                 newBuckets[i] = -1;
             }
 
-            var newEntries = new Transition[newSize];
-            Array.Copy(_transitions, 0, newEntries, 0, _count);
+            var newTransitions = new Transition[newSize];
+            Array.Copy(_transitions, 0, newTransitions, 0, _count);
+            
+            // rebalancing buckets
             for (var i = 0; i < _count; i++)
             {
-                var bucket = newEntries[i].Key % newSize;
-                newEntries[i].Next = newBuckets[bucket];
+                var bucket = newTransitions[i].Key % newSize;
+                newTransitions[i].Next = newBuckets[bucket];
                 newBuckets[bucket] = i;
             }
-            _buckets = newBuckets;
-            _transitions = newEntries;
 
+            _buckets = newBuckets;
+            _transitions = newTransitions;
             _count = _buckets.Length;
         }
     }
