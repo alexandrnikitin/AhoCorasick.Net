@@ -1,15 +1,18 @@
-﻿using Xunit;
+﻿using System;
+
+using Xunit;
 using Xunit.Extensions;
 
 namespace AhoCorasick.Net.Tests
 {
     public class AhoCorasickTreeTests
     {
-        [Fact]
-        public void CanCreate()
+        [Theory]
+        [InlineData(null, typeof(ArgumentNullException))]
+        [InlineData(new string[] { }, typeof(ArgumentException))]
+        public void InvalidKeywords(string[] keywords, Type exceptionType)
         {
-            var sut = new AhoCorasickTree(new string[] { });
-            Assert.NotNull(sut);
+            Assert.Throws(exceptionType, () => new AhoCorasickTree(keywords));
         }
 
         [Theory]
