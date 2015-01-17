@@ -20,7 +20,7 @@ namespace AhoCorasick.Net
                 AddPatternToTree(keywords[i]);
             }
 
-            SetFailureNodes();
+            SetFailures();
         }
 
         public bool Contains(string text)
@@ -70,56 +70,40 @@ namespace AhoCorasick.Net
             latestNode.IsFinished = true;
         }
 
-        private List<AhoCorasickTreeNode> FailToRootNode()
+        private void SetFailures()
         {
-            var nodes = new List<AhoCorasickTreeNode>();
-            foreach (var node in _rootNode.Transitions)
-            {
-                node.Failure = _rootNode;
-                nodes.AddRange(node.Transitions);
-            }
-            return nodes;
-        }
-
-        private void FailUsingBFS(List<AhoCorasickTreeNode> nodes)
-        {
-            while (nodes.Count != 0)
-            {
-                var newNodes = new List<AhoCorasickTreeNode>();
-                foreach (var node in nodes)
-                {
-                    var failure = node.ParentFailure;
-                    var value = node.Value;
-
-                    while (failure != null && !failure.ContainsTransition(value))
-                    {
-                        failure = failure.Failure;
-                    }
-
-                    if (failure == null)
-                    {
-                        node.Failure = _rootNode;
-                    }
-                    else
-                    {
-                        node.Failure = failure.GetTransition(value);
-                        if (!node.IsFinished)
-                        {
-                            node.IsFinished = node.Failure.IsFinished;
-                        }
-                    }
-
-                    newNodes.AddRange(node.Transitions);
-                }
-                nodes = newNodes;
-            }
-        }
-
-        private void SetFailureNodes()
-        {
-            var nodes = FailToRootNode();
-            FailUsingBFS(nodes);
             _rootNode.Failure = _rootNode;
+            var queue = new Queue<AhoCorasickTreeNode>();
+            queue.Enqueue(_rootNode);
+
+            while (queue.Count > 0)
+            {
+                var currentNode = queue.Dequeue();
+                foreach (var node in currentNode.Transitions)
+                {
+                    queue.Enqueue(node);
+                }
+
+                if (currentNode == _rootNode)
+                {
+                    continue;
+                }
+
+                var failure = currentNode.ParentFailure;
+                var value = currentNode.Value;
+                while (failure.GetTransition(value) != null && failure != _rootNode)
+                {
+                    failure = failure.Failure;
+                }
+
+                failure = failure.GetTransition(value);
+                if (failure == null || failure == currentNode)
+                {
+                    failure = _rootNode;
+                }
+
+                currentNode.Failure = failure;
+            }
         }
     }
 }
