@@ -32,7 +32,7 @@ namespace AhoCorasick.Net
             {
                 while (true)
                 {
-                    var transition = currentNode.GetTransition(text[i]);
+                    var transition = currentNode.GetNode(text[i]);
                     if (transition == null)
                     {
                         currentNode = currentNode.Failure;
@@ -63,8 +63,8 @@ namespace AhoCorasick.Net
             var length = pattern.Length;
             for (var i = 0; i < length; i++)
             {
-                latestNode = latestNode.GetTransition(pattern[i])
-                             ?? latestNode.AddTransition(pattern[i]);
+                latestNode = latestNode.GetNode(pattern[i])
+                             ?? latestNode.AddNode(pattern[i]);
             }
 
             latestNode.IsFinished = true;
@@ -79,7 +79,7 @@ namespace AhoCorasick.Net
             while (queue.Count > 0)
             {
                 var currentNode = queue.Dequeue();
-                foreach (var node in currentNode.Transitions)
+                foreach (var node in currentNode.Nodes)
                 {
                     queue.Enqueue(node);
                 }
@@ -91,12 +91,12 @@ namespace AhoCorasick.Net
 
                 var failure = currentNode.Parent.Failure;
                 var value = currentNode.Value;
-                while (failure.GetTransition(value) != null && failure != _rootNode)
+                while (failure.GetNode(value) != null && failure != _rootNode)
                 {
                     failure = failure.Failure;
                 }
 
-                failure = failure.GetTransition(value);
+                failure = failure.GetNode(value);
                 if (failure == null || failure == currentNode)
                 {
                     failure = _rootNode;

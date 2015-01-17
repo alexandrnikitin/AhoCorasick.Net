@@ -29,12 +29,12 @@ namespace AhoCorasick.Net
             _transitions = new Transition[0];
         }
 
-        public AhoCorasickTreeNode[] Transitions
+        public AhoCorasickTreeNode[] Nodes
         {
             get { return _transitions.Select(x => x.Value).ToArray(); }
         }
 
-        public AhoCorasickTreeNode AddTransition(char key)
+        public AhoCorasickTreeNode AddNode(char key)
         {
             Resize(_count + 1);
 
@@ -60,12 +60,7 @@ namespace AhoCorasick.Net
             return value;
         }
 
-        public bool ContainsTransition(char c)
-        {
-            return GetTransition(c) != null;
-        }
-
-        public AhoCorasickTreeNode GetTransition(char key)
+        public AhoCorasickTreeNode GetNode(char key)
         {
             if (_count == 0)
             {
