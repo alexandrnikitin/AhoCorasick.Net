@@ -1,6 +1,6 @@
 namespace AhoCorasick.Net
 {
-    internal struct Transition
+    internal struct Entry
     {
         public char Key;
         public int Next;
