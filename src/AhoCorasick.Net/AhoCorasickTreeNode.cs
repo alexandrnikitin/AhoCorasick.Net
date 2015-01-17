@@ -35,27 +35,17 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode AddNode(char key)
         {
-            Resize(_count + 1);
-
             var node = new AhoCorasickTreeNode(this, key);
-            var targetBucket = key % _count;
 
-            for (var i = _buckets[targetBucket]; i >= 0; i = _entries[i].Next)
-            {
-                if (_entries[i].Key == key)
-                {
-                    _entries[i].Value = node;
-                    return node;
-                }
-            }
+            var newSize = _count + 1;
+            Resize(newSize);
 
-            var index = _count - 1;
-
-            _entries[index].Next = _buckets[targetBucket];
-            _entries[index].Key = key;
-            _entries[index].Value = node;
-            _buckets[targetBucket] = index;
-
+            var targetBucket = key % newSize;
+            _entries[_count].Key = key;
+            _entries[_count].Value = node;
+            _buckets[targetBucket] = _count;
+            _count++;
+            
             return node;
         }
 
@@ -87,10 +77,10 @@ namespace AhoCorasick.Net
             }
 
             var newEntries = new Entry[newSize];
-            Array.Copy(_entries, 0, newEntries, 0, _count);
+            Array.Copy(_entries, 0, newEntries, 0, _entries.Length);
 
             // rebalancing buckets
-            for (var i = 0; i < _count; i++)
+            for (var i = 0; i < newSize; i++)
             {
                 var bucket = newEntries[i].Key % newSize;
                 newEntries[i].Next = newBuckets[bucket];
@@ -99,7 +89,6 @@ namespace AhoCorasick.Net
 
             _buckets = newBuckets;
             _entries = newEntries;
-            _count = _buckets.Length;
         }
     }
 }

@@ -15,6 +15,12 @@ namespace AhoCorasick.Net.Tests
             Assert.Throws(exceptionType, () => new AhoCorasickTree(keywords));
         }
 
+        [Fact]
+        public void CanCreate()
+        {
+            var sut = new AhoCorasickTree(new[] { "ab", "ab" });
+        }
+
         [Theory]
         [InlineData("d", false)]
         [InlineData("bce", false)]
