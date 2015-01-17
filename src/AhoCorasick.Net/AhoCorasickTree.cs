@@ -32,8 +32,8 @@ namespace AhoCorasick.Net
             {
                 while (true)
                 {
-                    var transition = currentNode.GetNode(text[i]);
-                    if (transition == null)
+                    var node = currentNode.GetNode(text[i]);
+                    if (node == null)
                     {
                         currentNode = currentNode.Failure;
                         if (currentNode == _rootNode)
@@ -43,12 +43,12 @@ namespace AhoCorasick.Net
                     }
                     else
                     {
-                        if (transition.IsFinished)
+                        if (node.IsFinished)
                         {
                             return true;
                         }
 
-                        currentNode = transition;
+                        currentNode = node;
                         break;
                     }
                 }

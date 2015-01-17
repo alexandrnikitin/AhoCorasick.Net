@@ -65,6 +65,7 @@ namespace AhoCorasick.Net
             {
                 return null;
             }
+
             var bucketIndex = key % _count;
             for (var i = _buckets[bucketIndex]; i >= 0; i = _entries[i].Next)
             {
@@ -85,19 +86,19 @@ namespace AhoCorasick.Net
                 newBuckets[i] = -1;
             }
 
-            var newTransitions = new Entry[newSize];
-            Array.Copy(_entries, 0, newTransitions, 0, _count);
+            var newEntries = new Entry[newSize];
+            Array.Copy(_entries, 0, newEntries, 0, _count);
 
             // rebalancing buckets
             for (var i = 0; i < _count; i++)
             {
-                var bucket = newTransitions[i].Key % newSize;
-                newTransitions[i].Next = newBuckets[bucket];
+                var bucket = newEntries[i].Key % newSize;
+                newEntries[i].Next = newBuckets[bucket];
                 newBuckets[bucket] = i;
             }
 
             _buckets = newBuckets;
-            _entries = newTransitions;
+            _entries = newEntries;
             _count = _buckets.Length;
         }
     }
