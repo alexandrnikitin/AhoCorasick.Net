@@ -181,8 +181,8 @@ namespace AhoCorasick.Net
                 var newEntries = new Entry[newSize];
                 Array.Copy(_entries, 0, newEntries, 0, _entries.Length);
 
-                // rebalancing buckets
-                for (var i = 0; i < newSize; i++)
+                // rebalancing buckets for existing entries
+                for (var i = 0; i < _entries.Length; i++)
                 {
                     var bucket = newEntries[i].Key % newSize;
                     newEntries[i].Next = newBuckets[bucket];
