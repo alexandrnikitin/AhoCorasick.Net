@@ -89,7 +89,7 @@ namespace AhoCorasick.Net
                     continue;
                 }
 
-                var failure = currentNode.ParentFailure;
+                var failure = currentNode.Parent.Failure;
                 var value = currentNode.Value;
                 while (failure.GetTransition(value) != null && failure != _rootNode)
                 {

@@ -9,7 +9,7 @@ namespace AhoCorasick.Net
         public bool IsFinished;
         public char Value;
 
-        private readonly AhoCorasickTreeNode _parent;
+        public readonly AhoCorasickTreeNode Parent;
 
         private int[] _buckets;
         private int _count;
@@ -23,15 +23,10 @@ namespace AhoCorasick.Net
         private AhoCorasickTreeNode(AhoCorasickTreeNode parent, char value)
         {
             Value = value;
-            _parent = parent;
+            Parent = parent;
 
             _buckets = new int[0];
             _transitions = new Transition[0];
-        }
-
-        public AhoCorasickTreeNode ParentFailure
-        {
-            get { return _parent == null ? null : _parent.Failure; }
         }
 
         public AhoCorasickTreeNode[] Transitions
