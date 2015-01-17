@@ -51,10 +51,7 @@ namespace AhoCorasick.Net
 
         public AhoCorasickTreeNode GetNode(char key)
         {
-            if (_count == 0)
-            {
-                return null;
-            }
+            if (_count == 0) return null;
 
             var bucketIndex = key % _count;
             for (var i = _buckets[bucketIndex]; i >= 0; i = _entries[i].Next)
