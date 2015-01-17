@@ -104,6 +104,11 @@ namespace AhoCorasick.Net
                 }
 
                 currentNode.Failure = failure;
+                if (!currentNode.IsFinished)
+                {
+                    currentNode.IsFinished = failure.IsFinished;
+                }
+
             }
         }
 
