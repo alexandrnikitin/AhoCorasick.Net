@@ -43,6 +43,7 @@ namespace AhoCorasick.Net
             var targetBucket = key % newSize;
             _entries[_count].Key = key;
             _entries[_count].Value = node;
+            _entries[_count].Next = _buckets[targetBucket];
             _buckets[targetBucket] = _count;
             _count++;
             
