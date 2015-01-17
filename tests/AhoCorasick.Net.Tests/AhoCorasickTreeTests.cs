@@ -7,14 +7,6 @@ namespace AhoCorasick.Net.Tests
 {
     public class AhoCorasickTreeTests
     {
-        [Theory]
-        [InlineData(null, typeof(ArgumentNullException))]
-        [InlineData(new string[] { }, typeof(ArgumentException))]
-        public void InvalidKeywords(string[] keywords, Type exceptionType)
-        {
-            Assert.Throws(exceptionType, () => new AhoCorasickTree(keywords));
-        }
-
         [Fact]
         public void CanCreate()
         {
@@ -32,11 +24,17 @@ namespace AhoCorasick.Net.Tests
             Assert.Equal(expected, sut.Contains(str));
         }
 
+        [Theory]
+        [InlineData(null, typeof(ArgumentNullException))]
+        [InlineData(new string[] { }, typeof(ArgumentException))]
+        public void InvalidKeywords(string[] keywords, Type exceptionType)
+        {
+            Assert.Throws(exceptionType, () => new AhoCorasickTree(keywords));
+        }
+
         [Fact]
         public void Performance()
         {
-
-
         }
     }
 }
