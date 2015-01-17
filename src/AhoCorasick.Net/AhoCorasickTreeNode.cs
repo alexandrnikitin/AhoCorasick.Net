@@ -8,7 +8,7 @@ namespace AhoCorasick.Net
         public readonly AhoCorasickTreeNode Parent;
         public AhoCorasickTreeNode Failure;
         public bool IsFinished;
-        public readonly char Value;
+        public readonly char Key;
 
         private int[] _buckets;
         private int _count;
@@ -19,9 +19,9 @@ namespace AhoCorasick.Net
         {
         }
 
-        private AhoCorasickTreeNode(AhoCorasickTreeNode parent, char value)
+        private AhoCorasickTreeNode(AhoCorasickTreeNode parent, char key)
         {
-            Value = value;
+            Key = key;
             Parent = parent;
 
             _buckets = new int[0];
@@ -37,15 +37,15 @@ namespace AhoCorasick.Net
         {
             Resize(_count + 1);
 
-            var value = new AhoCorasickTreeNode(this, key);
+            var node = new AhoCorasickTreeNode(this, key);
             var targetBucket = key % _count;
 
             for (var i = _buckets[targetBucket]; i >= 0; i = _entries[i].Next)
             {
                 if (_entries[i].Key == key)
                 {
-                    _entries[i].Value = value;
-                    return value;
+                    _entries[i].Value = node;
+                    return node;
                 }
             }
 
@@ -53,10 +53,10 @@ namespace AhoCorasick.Net
 
             _entries[index].Next = _buckets[targetBucket];
             _entries[index].Key = key;
-            _entries[index].Value = value;
+            _entries[index].Value = node;
             _buckets[targetBucket] = index;
 
-            return value;
+            return node;
         }
 
         public AhoCorasickTreeNode GetNode(char key)
