@@ -5,6 +5,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AhoCorasick.Net", "src\AhoC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AhoCorasick.Net.Tests", "tests\AhoCorasick.Net.Tests\AhoCorasick.Net.Tests.csproj", "{992DFF0A-92EF-4AD0-9076-FCB0C1BA99BA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{9EBF4F1C-3101-4E65-9A4A-6EBFE4A823F2}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{311D94BD-6DCE-46D8-862C-71AB38D19C14}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{389268B9-F389-4506-B79D-B2F4889F41D5}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.fsx = build\build.fsx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
