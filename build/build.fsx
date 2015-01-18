@@ -3,7 +3,11 @@ open Fake
 
 RestorePackages()
 
+let product = "AhoCorasick.Net"
+let description = "Implementation of Aho-Corasick algorithm on .NET"
+let copyright = "Copyright © 2015"
 let version = "0.1.0"
+
 let buildDir = "output"
 
 Target "Clean" (fun _ ->
@@ -20,7 +24,23 @@ Target "Build" (fun _ ->
       |> Log "Build-Output: "
 )
 
+open Fake.AssemblyInfoFile
+
+Target "AssemblyInfo" (fun _ ->
+    let assemblyInfoVersion = version + ".0"
+    CreateCSharpAssemblyInfo "../src/AhoCorasick.Net/Properties/AssemblyInfo.cs"
+        [Attribute.Title product
+         Attribute.Description description
+         Attribute.Copyright copyright
+         Attribute.Guid "7e918fef-c4dc-4dc4-b366-f2fc38eced4c"
+         Attribute.Product product
+         Attribute.Version assemblyInfoVersion
+         Attribute.FileVersion assemblyInfoVersion]
+)
+
+
 "Clean"
+  ==> "AssemblyInfo"
   ==> "Build"
   ==> "Default"
 
