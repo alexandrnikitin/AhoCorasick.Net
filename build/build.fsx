@@ -6,9 +6,13 @@ RestorePackages()
 let product = "AhoCorasick.Net"
 let description = "Implementation of Aho-Corasick algorithm on .NET"
 let copyright = "Copyright © 2015"
+let authors = [ "Alexandr Nikitin" ]
+let company = "Alexandr Nikitin"
+let tags = ["aho-corasick"]
 let version = "0.1.0"
 
 let buildDir = "output"
+let nugetDir = "nuget"
 
 Target "Clean" (fun _ ->
     CleanDir buildDir
@@ -38,10 +42,25 @@ Target "AssemblyInfo" (fun _ ->
          Attribute.FileVersion assemblyInfoVersion]
 )
 
+Target "NuGet" (fun _ ->
+    let nugetPath = "../.nuget/nuget.exe"
+    NuGet (fun p -> 
+        { p with   
+            Authors = authors
+            Project = product
+            Description = description
+            Version = version
+            Tags = tags |> String.concat " "
+            OutputPath = nugetDir
+            ToolPath = nugetPath
+            })
+        ("C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.nuspec")
+)
 
 "Clean"
   ==> "AssemblyInfo"
   ==> "Build"
+  ==> "NuGet"
   ==> "Default"
 
 RunTargetOrDefault "Default"
