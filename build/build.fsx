@@ -12,7 +12,8 @@ let tags = ["aho-corasick"]
 let version = "0.1.0"
 
 let buildDir = "output"
-let nugetDir = "nuget"
+let packagingRoot = "./packaging/"
+let packagingDir = packagingRoot @@  product
 
 Target "Clean" (fun _ ->
     CleanDir buildDir
@@ -44,17 +45,31 @@ Target "AssemblyInfo" (fun _ ->
 
 Target "NuGet" (fun _ ->
     let nugetPath = "../.nuget/nuget.exe"
+    let net45Dir = packagingDir @@ "lib/net45/"
+    CleanDirs [packagingRoot]
+    
+    ensureDirectory net45Dir
+
+    CopyFile net45Dir (buildDir @@ "AhoCorasick.Net.dll")
+    CopyFile net45Dir (buildDir @@ "AhoCorasick.Net.pdb")
+
     NuGet (fun p -> 
-        { p with   
+        {p with
             Authors = authors
             Project = product
             Description = description
-            Version = version
+            Summary = description
             Tags = tags |> String.concat " "
-            OutputPath = nugetDir
+            Version = version
+
+            OutputPath = packagingRoot
+            WorkingDir = packagingDir
             ToolPath = nugetPath
-            })
-        ("C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.nuspec")
+
+            AccessKey = getBuildParamOrDefault "nugetkey" ""
+            Publish = false 
+            }) 
+            "C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.nuspec"
 )
 
 "Clean"
