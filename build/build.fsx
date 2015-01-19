@@ -9,14 +9,16 @@ let copyright = "Copyright © 2015"
 let authors = [ "Alexandr Nikitin" ]
 let company = "Alexandr Nikitin"
 let tags = ["aho-corasick"]
-let version = "0.1.0"
+let version = "0.4.0"
 
 let buildDir = "output"
 let packagingRoot = "./packaging/"
 let packagingDir = packagingRoot @@  product
+let packagingSourceDir = packagingRoot @@  product + ".Source"
+let nugetPath = "../.nuget/nuget.exe"
 
 Target "Clean" (fun _ ->
-    CleanDir buildDir
+    CleanDirs [buildDir; packagingRoot]
 )
 
 Target "Default" (fun _ ->
@@ -44,10 +46,7 @@ Target "AssemblyInfo" (fun _ ->
 )
 
 Target "NuGet" (fun _ ->
-    let nugetPath = "../.nuget/nuget.exe"
     let net45Dir = packagingDir @@ "lib/net45/"
-    CleanDirs [packagingRoot]
-    
     ensureDirectory net45Dir
 
     CopyFile net45Dir (buildDir @@ "AhoCorasick.Net.dll")
@@ -66,15 +65,41 @@ Target "NuGet" (fun _ ->
             WorkingDir = packagingDir
             ToolPath = nugetPath
 
-            Publish = true 
+            Publish = true
             }) 
             "C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.nuspec"
+)
+
+Target "NuGetSource" (fun _ ->
+    
+    let contentDir = packagingSourceDir @@ "content"
+    ensureDirectory contentDir
+
+    CopyFile contentDir (buildDir @@ "C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/src/AhoCorasick.Net/AhoCorasickTree.cs")
+
+    NuGet (fun p -> 
+        {p with
+            Authors = authors
+            Project = product + ".Source"
+            Description = description
+            Summary = description
+            Tags = tags |> String.concat " "
+            Version = version
+
+            OutputPath = packagingRoot
+            WorkingDir = packagingSourceDir
+            ToolPath = nugetPath
+
+            Publish = true 
+            }) 
+            "C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.Source.nuspec"
 )
 
 "Clean"
   ==> "AssemblyInfo"
   ==> "Build"
   ==> "NuGet"
+  ==> "NuGetSource"
   ==> "Default"
 
 RunTargetOrDefault "Default"
