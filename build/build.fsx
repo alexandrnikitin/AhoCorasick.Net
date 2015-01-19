@@ -66,8 +66,7 @@ Target "NuGet" (fun _ ->
             WorkingDir = packagingDir
             ToolPath = nugetPath
 
-            AccessKey = getBuildParamOrDefault "nugetkey" ""
-            Publish = false 
+            Publish = true 
             }) 
             "C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.nuspec"
 )
