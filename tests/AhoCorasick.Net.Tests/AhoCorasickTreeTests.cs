@@ -10,7 +10,7 @@ namespace AhoCorasick.Net.Tests
         [Fact]
         public void CanCreate()
         {
-            var sut = new AhoCorasickTree(new[] { "ab", "ab" });
+            var sut = new AhoCorasickTreeBasedOnArray(new[] { "ab", "ab" });
         }
 
         [Theory]
@@ -20,7 +20,7 @@ namespace AhoCorasick.Net.Tests
         [InlineData("abcd", true)]
         public void Contains(string str, bool expected)
         {
-            var sut = new AhoCorasickTree(new[] { "ab", "abc", "bcd" });
+            var sut = new AhoCorasickTreeBasedOnArray(new[] { "ab", "abc", "bcd" });
             Assert.Equal(expected, sut.Contains(str));
         }
 
