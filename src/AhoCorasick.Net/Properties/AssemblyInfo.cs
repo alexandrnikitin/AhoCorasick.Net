@@ -7,10 +7,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyrightAttribute("Copyright � 2015")]
 [assembly: GuidAttribute("7e918fef-c4dc-4dc4-b366-f2fc38eced4c")]
 [assembly: AssemblyProductAttribute("AhoCorasick.Net")]
-[assembly: AssemblyVersionAttribute("0.4.0.0")]
-[assembly: AssemblyFileVersionAttribute("0.4.0.0")]
+[assembly: AssemblyVersionAttribute("0.5.0.0")]
+[assembly: AssemblyFileVersionAttribute("0.5.0.0")]
 namespace System {
     internal static class AssemblyVersionInformation {
-        internal const string Version = "0.4.0.0";
+        internal const string Version = "0.5.0.0";
     }
 }
