@@ -92,7 +92,7 @@ namespace AhoCorasick.Net
 
                 var failure = currentNode.Parent.Failure;
                 var key = currentNode.Key;
-                while (failure.GetNode(key) != null && failure != _rootNode)
+                while (failure.GetNode(key) == null && failure != _rootNode)
                 {
                     failure = failure.Failure;
                 }
