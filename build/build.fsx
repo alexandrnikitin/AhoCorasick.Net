@@ -67,7 +67,7 @@ Target "NuGet" (fun _ ->
 
             Publish = true
             }) 
-            "C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.nuspec"
+            "AhoCorasick.Net.nuspec"
 )
 
 Target "NuGetSource" (fun _ ->
@@ -92,7 +92,7 @@ Target "NuGetSource" (fun _ ->
 
             Publish = true 
             }) 
-            "C:/Users/a.nikitin/Documents/Projects/my/AhoCorasick.net/build/AhoCorasick.Net.Source.nuspec"
+            "AhoCorasick.Net.Source.nuspec"
 )
 
 "Clean"
