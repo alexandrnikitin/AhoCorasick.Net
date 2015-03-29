@@ -58,6 +58,43 @@ namespace AhoCorasick.Net
             return false;
         }
 
+        // todo copy paste from Contains method: Refactor!
+        // todo check performance 
+        public IEnumerable<KeyValuePair<string, int>> Search(string text)
+        {
+            var currentNode = _rootNode;
+
+            var length = text.Length;
+            for (var i = 0; i < length; i++)
+            {
+                while (true)
+                {
+                    var node = currentNode.GetNode(text[i]);
+                    if (node == null)
+                    {
+                        currentNode = currentNode.Failure;
+                        if (currentNode == _rootNode)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (node.IsFinished)
+                        {
+                            foreach (var result in node.Results)
+                            {
+                                yield return new KeyValuePair<string, int>(result, i - result.Length + 1);
+                            }
+                        }
+
+                        currentNode = node;
+                        break;
+                    }
+                }
+            }
+        }
+
         private void AddPatternToTree(string pattern)
         {
             var latestNode = _rootNode;
@@ -69,6 +106,7 @@ namespace AhoCorasick.Net
             }
 
             latestNode.IsFinished = true;
+            latestNode.Results.Add(pattern);
         }
 
         private void SetFailures()
@@ -107,8 +145,8 @@ namespace AhoCorasick.Net
                 if (!currentNode.IsFinished)
                 {
                     currentNode.IsFinished = failure.IsFinished;
+                    currentNode.Results.AddRange(failure.Results);
                 }
-
             }
         }
 
@@ -117,6 +155,7 @@ namespace AhoCorasick.Net
             public readonly AhoCorasickTreeNode Parent;
             public AhoCorasickTreeNode Failure;
             public bool IsFinished;
+            public List<string> Results;
             public readonly char Key;
 
             private int[] _buckets;
@@ -135,6 +174,7 @@ namespace AhoCorasick.Net
 
                 _buckets = new int[0];
                 _entries = new Entry[0];
+                Results = new List<string>();
             }
 
             public AhoCorasickTreeNode[] Nodes
