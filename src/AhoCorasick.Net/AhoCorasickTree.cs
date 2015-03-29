@@ -58,7 +58,7 @@ namespace AhoCorasick.Net
             return false;
         }
 
-        public KeyValuePair<string, int> Search(string text)
+        public IEnumerable<KeyValuePair<string, int>> Search(string text)
         {
             throw new NotImplementedException();
         }
