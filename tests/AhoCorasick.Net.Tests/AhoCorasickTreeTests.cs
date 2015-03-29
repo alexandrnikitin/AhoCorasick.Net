@@ -41,7 +41,10 @@ namespace AhoCorasick.Net.Tests
             var userAgent = "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36";
             var keywordsPositions = keywords.Search(userAgent).ToList();
 
+            Assert.Equal(3, keywordsPositions.Count);
             Assert.Contains(new KeyValuePair<string, int>("Mozilla", 0), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("6.3", 24), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("KHTML", 56), keywordsPositions);
         }
 
         [Fact]
