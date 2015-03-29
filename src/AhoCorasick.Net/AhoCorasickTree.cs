@@ -82,7 +82,10 @@ namespace AhoCorasick.Net
                     {
                         if (node.IsFinished)
                         {
-                            yield return new KeyValuePair<string, int>();
+                            foreach (var result in node.Results)
+                            {
+                                yield return new KeyValuePair<string, int>(result, i - result.Length + 1);
+                            }
                         }
 
                         currentNode = node;
@@ -103,6 +106,7 @@ namespace AhoCorasick.Net
             }
 
             latestNode.IsFinished = true;
+            latestNode.Results.Add(pattern);
         }
 
         private void SetFailures()
@@ -141,8 +145,8 @@ namespace AhoCorasick.Net
                 if (!currentNode.IsFinished)
                 {
                     currentNode.IsFinished = failure.IsFinished;
+                    currentNode.Results.AddRange(failure.Results);
                 }
-
             }
         }
 
@@ -151,6 +155,7 @@ namespace AhoCorasick.Net
             public readonly AhoCorasickTreeNode Parent;
             public AhoCorasickTreeNode Failure;
             public bool IsFinished;
+            public List<string> Results;
             public readonly char Key;
 
             private int[] _buckets;
@@ -169,6 +174,7 @@ namespace AhoCorasick.Net
 
                 _buckets = new int[0];
                 _entries = new Entry[0];
+                Results = new List<string>();
             }
 
             public AhoCorasickTreeNode[] Nodes
