@@ -60,7 +60,34 @@ namespace AhoCorasick.Net
 
         public IEnumerable<KeyValuePair<string, int>> Search(string text)
         {
-            throw new NotImplementedException();
+            var currentNode = _rootNode;
+
+            var length = text.Length;
+            for (var i = 0; i < length; i++)
+            {
+                while (true)
+                {
+                    var node = currentNode.GetNode(text[i]);
+                    if (node == null)
+                    {
+                        currentNode = currentNode.Failure;
+                        if (currentNode == _rootNode)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        if (node.IsFinished)
+                        {
+                            yield return new KeyValuePair<string, int>();
+                        }
+
+                        currentNode = node;
+                        break;
+                    }
+                }
+            }
         }
 
         private void AddPatternToTree(string pattern)
