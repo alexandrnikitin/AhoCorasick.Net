@@ -58,6 +58,11 @@ namespace AhoCorasick.Net
             return false;
         }
 
+        public KeyValuePair<string, int> Search(string text)
+        {
+            throw new NotImplementedException();
+        }
+
         private void AddPatternToTree(string pattern)
         {
             var latestNode = _rootNode;
