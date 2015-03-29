@@ -58,6 +58,8 @@ namespace AhoCorasick.Net
             return false;
         }
 
+        // todo copy paste from Contains method: Refactor!
+        // todo check performance 
         public IEnumerable<KeyValuePair<string, int>> Search(string text)
         {
             var currentNode = _rootNode;
