@@ -75,7 +75,12 @@ namespace AhoCorasick.Net
                         currentNode = currentNode.Failure;
                         if (currentNode == _rootNode)
                         {
-                            break;
+                            // try to continue with the same pattern
+                            node = currentNode.GetNode(text[i]);
+                            if (node == null)
+                            {
+                                break;    
+                            }
                         }
                     }
                     else
@@ -145,6 +150,10 @@ namespace AhoCorasick.Net
                 if (!currentNode.IsFinished)
                 {
                     currentNode.IsFinished = failure.IsFinished;
+                }
+
+                if (currentNode.IsFinished && failure.IsFinished)
+                {
                     currentNode.Results.AddRange(failure.Results);
                 }
             }

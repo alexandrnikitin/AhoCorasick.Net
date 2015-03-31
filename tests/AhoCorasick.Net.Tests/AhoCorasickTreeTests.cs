@@ -48,6 +48,21 @@ namespace AhoCorasick.Net.Tests
         }
 
         [Fact]
+        public void FindKeywordAndPositionFromWikipedia()
+        {
+            var keywords = new AhoCorasickTree(new[] { "a", "ab", "bab", "bc", "bca", "c", "caa" });
+            var keywordsPositions = keywords.Search("abccab").ToList();
+            Assert.Equal(7, keywordsPositions.Count);
+            Assert.Contains(new KeyValuePair<string, int>("a", 0), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("ab", 0), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("bc", 1), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("c", 2), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("c", 3), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("a", 4), keywordsPositions);
+            Assert.Contains(new KeyValuePair<string, int>("ab", 4), keywordsPositions);
+        }
+
+        [Fact]
         public void Performance()
         {
         }
