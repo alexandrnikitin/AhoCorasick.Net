@@ -1,7 +1,7 @@
 AhoCorasick.net
 ================
 
-Implementation of Aho-Corasick string matching algorithm on .NET  
+Efficient and very fast implementation of Aho-Corasick string matching algorithm on .NET  
 TBA
 
 Install
