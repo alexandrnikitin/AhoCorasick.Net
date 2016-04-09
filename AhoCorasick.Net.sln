@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AhoCorasick.Net", "src\AhoCorasick.Net\AhoCorasick.Net.csproj", "{2CAFBA59-090A-42B0-A0C2-F2396E873CCD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AhoCorasick.Net.Tests", "tests\AhoCorasick.Net.Tests\AhoCorasick.Net.Tests.csproj", "{992DFF0A-92EF-4AD0-9076-FCB0C1BA99BA}"
@@ -21,6 +23,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{311D94BD
 		build\build.fsx = build\build.fsx
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AhoCorasick.Net.Benchmarks", "benchmarks\AhoCorasick.Net.Benchmarks\AhoCorasick.Net.Benchmarks.csproj", "{EDCDBB7F-11C7-445E-AA07-40DB30D4ED8D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +39,10 @@ Global
 		{992DFF0A-92EF-4AD0-9076-FCB0C1BA99BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{992DFF0A-92EF-4AD0-9076-FCB0C1BA99BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{992DFF0A-92EF-4AD0-9076-FCB0C1BA99BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDCDBB7F-11C7-445E-AA07-40DB30D4ED8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDCDBB7F-11C7-445E-AA07-40DB30D4ED8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDCDBB7F-11C7-445E-AA07-40DB30D4ED8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDCDBB7F-11C7-445E-AA07-40DB30D4ED8D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
