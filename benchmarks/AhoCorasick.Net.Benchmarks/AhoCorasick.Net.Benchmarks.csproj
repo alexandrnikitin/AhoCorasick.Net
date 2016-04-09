@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="RandomString.cs" />
+    <Compile Include="Sandbox\AhoCorasickTreeHashBased.cs" />
     <Compile Include="SmallTreeBenchmark.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
