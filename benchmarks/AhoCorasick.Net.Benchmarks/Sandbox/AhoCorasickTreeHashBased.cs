@@ -114,6 +114,8 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
 
         private class AhoCorasickTreeNode
         {
+            private ushort _size;
+            private Entry[] _entries;
             public readonly AhoCorasickTreeNode Parent;
             public AhoCorasickTreeNode Failure;
             public bool IsFinished;
@@ -129,17 +131,15 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
                 Key = key;
                 Parent = parent;
                 _size = 0;
-                _entries2 = new Entry2[0];
+                _entries = new Entry[0];
             }
 
             public AhoCorasickTreeNode[] Nodes
             {
-                get { return _entries2.Where(x => x.Key != 0).Select(x => x.Value).ToArray(); }
+                get { return _entries.Where(x => x.Key != 0).Select(x => x.Value).ToArray(); }
             }
 
-            private ushort _size;
-            private Entry2[] _entries2;
-            private struct Entry2
+            private struct Entry
             {
                 public ushort Key;
                 public AhoCorasickTreeNode Value;
@@ -150,9 +150,9 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
             {
                 if (_size == 0) return null;
 
-                var ind = (ushort)(key & (_entries2.Length - 1));
-                var keyThere = _entries2[ind].Key;
-                var value = _entries2[ind].Value;
+                var ind = (ushort)(key & (_size - 1));
+                var keyThere = _entries[ind].Key;
+                var value = _entries[ind].Value;
                 if (keyThere != 0 && (keyThere == key))
                 {
                     return value;
@@ -165,47 +165,44 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
             {
                 var node = new AhoCorasickTreeNode(this, key);
 
-                if (_size == 0)
-                {
-                    Resize2();
-                }
+                if (_size == 0)  Resize();
 
                 while (true)
                 {
                     var ind = (ushort)(key & (_size - 1));
 
-                    if (_entries2[ind].Key != 0 && _entries2[ind].Key != key)
+                    if (_entries[ind].Key != 0 && _entries[ind].Key != key)
                     {
-                        Resize2();
+                        Resize();
                         continue;
                     }
 
-                    _entries2[ind].Key = key;
-                    _entries2[ind].Value = node;
+                    _entries[ind].Key = key;
+                    _entries[ind].Value = node;
                     return node;
                 }
             }
 
-            private void Resize2()
+            private void Resize()
             {
                 _size = (ushort)(Math.Max(_size, (ushort)1) * 2);
 
-                var newEntries = new Entry2[_size];
-                for (var i = 0; i < _entries2.Length; i++)
+                var newEntries = new Entry[_size];
+                for (var i = 0; i < _entries.Length; i++)
                 {
-                    var key = _entries2[i].Key;
-                    var value = _entries2[i].Value;
+                    var key = _entries[i].Key;
+                    var value = _entries[i].Value;
                     var ind = (ushort)(key & (_size - 1));
 
                     if (newEntries[ind].Key != 0 && newEntries[ind].Key != key)
                     {
-                        Resize2();
+                        Resize();
                         return;
                     }
                     newEntries[ind].Key = key;
                     newEntries[ind].Value = value;
                 }
-                _entries2 = newEntries;
+                _entries = newEntries;
                 
             }
         }
