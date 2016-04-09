@@ -114,23 +114,23 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
 
         private class AhoCorasickTreeNode
         {
-            private ushort _size;
+            private char _size;
             private Entry[] _entries;
             public readonly AhoCorasickTreeNode Parent;
             public AhoCorasickTreeNode Failure;
             public bool IsFinished;
-            public readonly ushort Key;
+            public readonly char Key;
 
             internal AhoCorasickTreeNode()
                 : this(null, ' ')
             {
             }
 
-            private AhoCorasickTreeNode(AhoCorasickTreeNode parent, ushort key)
+            private AhoCorasickTreeNode(AhoCorasickTreeNode parent, char key)
             {
                 Key = key;
                 Parent = parent;
-                _size = 0;
+                _size = (char)0;
                 _entries = new Entry[0];
             }
 
@@ -141,16 +141,16 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
 
             private struct Entry
             {
-                public ushort Key;
+                public char Key;
                 public AhoCorasickTreeNode Value;
             }
 
 
-            public AhoCorasickTreeNode GetNode(ushort key)
+            public AhoCorasickTreeNode GetNode(char key)
             {
                 if (_size == 0) return null;
 
-                var ind = (ushort)(key & (_size - 1));
+                var ind = (char)(key & (_size - 1));
                 var keyThere = _entries[ind].Key;
                 var value = _entries[ind].Value;
                 if (keyThere != 0 && (keyThere == key))
@@ -161,7 +161,7 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
                 return null;
             }
 
-            public AhoCorasickTreeNode AddNode(ushort key)
+            public AhoCorasickTreeNode AddNode(char key)
             {
                 var node = new AhoCorasickTreeNode(this, key);
 
@@ -169,7 +169,7 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
 
                 while (true)
                 {
-                    var ind = (ushort)(key & (_size - 1));
+                    var ind = (char)(key & (_size - 1));
 
                     if (_entries[ind].Key != 0 && _entries[ind].Key != key)
                     {
@@ -185,14 +185,14 @@ namespace AhoCorasick.Net.Benchmarks.Sandbox
 
             private void Resize()
             {
-                _size = (ushort)(Math.Max(_size, (ushort)1) * 2);
+                _size = (char)(Math.Max(_size, (char)1) * 2);
 
                 var newEntries = new Entry[_size];
                 for (var i = 0; i < _entries.Length; i++)
                 {
                     var key = _entries[i].Key;
                     var value = _entries[i].Value;
-                    var ind = (ushort)(key & (_size - 1));
+                    var ind = (char)(key & (_size - 1));
 
                     if (newEntries[ind].Key != 0 && newEntries[ind].Key != key)
                     {
